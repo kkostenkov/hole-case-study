@@ -1,3 +1,5 @@
+using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using Data;
 using Managers.Profile.Storage;
@@ -10,6 +12,7 @@ namespace Managers.Profile
         private readonly IProfileStorage localStorage = new LocalProfileStorage();
         private ProfileData profile;
         private readonly ProfileSaver profileSaver;
+        private RemoteProfileFetcher remoteProfileFetcher = new RemoteProfileFetcher();
 
         public ProfileService()
         {
@@ -32,6 +35,21 @@ namespace Managers.Profile
                 CreateNewProfile();    
             }
             Debug.Log("Profile loaded");
+        }
+
+        public void CheckRemoteProfile()
+        {
+            this.remoteProfileFetcher.TryFetch(OnRemoteProfileCheckComplete);
+        }
+
+        private void OnRemoteProfileCheckComplete(ProfileDataBundle bundle)
+        {
+            if (bundle == null) {
+                Debug.Log("No remote save found.");
+            }
+            var timestamp = bundle.Details.SaveTimestamp;
+            var dateTime = DateTimeOffset.FromUnixTimeSeconds(timestamp).DateTime;
+            Debug.Log($"Remote save file found: {dateTime.ToString(CultureInfo.InvariantCulture)}");
         }
 
         string IProfileViewService.GetNickname()
