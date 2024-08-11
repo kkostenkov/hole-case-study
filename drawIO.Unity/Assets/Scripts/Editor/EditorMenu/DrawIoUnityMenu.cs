@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Data;
 using Managers.ProfileStorage;
 using UnityEditor;
+using UnityEngine;
 
 public class DrawIoUnityMenu
 {
@@ -12,5 +13,13 @@ public class DrawIoUnityMenu
         var storage = new LocalProfileStorage();
         
         return storage.SaveImmediate(profile);
+    }
+    
+    [MenuItem("DrawIO/Profile/Load")]
+    private static async Task LoadProfile()
+    {
+        var storage = new LocalProfileStorage();
+        var data = await storage.LoadProfile();
+        Debug.Log(data.ToString());
     }
 }

@@ -12,20 +12,32 @@ namespace Managers.ProfileStorage
         private const string SaveFileName = "profile.json";
         public readonly string SavePath;
         private readonly SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
-        private ProfileData profileToSave;
 
         public LocalProfileStorage()
         {
             this.SavePath = $"{Application.persistentDataPath}/{SaveFileName}";
         }
         
-        /// <summary>
-        /// Call this to save immediately important progress update
-        /// </summary>
         public Task SaveImmediate(ProfileData profile)
         {
-            this.profileToSave = profile;
-            return Save(this.profileToSave);
+            return Save(profile);
+        }
+
+        public async Task<ProfileData> LoadProfile()
+        {
+            await this.semaphore.WaitAsync();
+            try {
+                if (!File.Exists(this.SavePath)) {
+                    return null;
+                }
+
+                var json = await File.ReadAllTextAsync(this.SavePath);
+                var data = JsonConvert.DeserializeObject<ProfileData>(json);
+                return data;
+            }
+            finally {
+                this.semaphore.Release();
+            }
         }
 
         private async Task Save(ProfileData profile)
