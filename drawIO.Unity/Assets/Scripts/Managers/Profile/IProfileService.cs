@@ -6,5 +6,6 @@ namespace Managers.Profile
     {
         Task LoadOrCreateProfileAsync();
         void LoadOrCreateProfile();
+        void CheckRemoteProfile();
     }
 }

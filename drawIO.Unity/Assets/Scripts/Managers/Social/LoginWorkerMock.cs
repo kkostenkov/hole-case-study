@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Utils;
 
 namespace Managers.Social
 {
@@ -19,8 +20,8 @@ namespace Managers.Social
             if (onLogin != null) {
                 this.LoginSubscribers += onLogin;    
             }
-            // A helper object to be in sync with unity main thread
-            GameManager.Instance.StartCoroutine(ResolveLogin());
+            var runner = new CoroutineRunner();
+            runner.StartCoroutine(ResolveLogin());
         }
 
         private IEnumerator ResolveLogin()

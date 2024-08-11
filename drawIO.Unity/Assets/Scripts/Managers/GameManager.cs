@@ -94,9 +94,8 @@ public class GameManager : SingletonMB<GameManager>
 
         Application.targetFrameRate = 60;
 
+        StartProfileService();
         // Cache
-        m_ProfileService = new ProfileService();
-        m_ProfileService.LoadOrCreateProfile();
         m_StatsManager = StatsManager.Instance;
         m_StatsManager.Inject(this.m_ProfileService);
         m_ProgressionView = ProgressionView.Instance;
@@ -136,6 +135,13 @@ public class GameManager : SingletonMB<GameManager>
         };
 
         m_PowerUps = new List<PowerUpData>(Resources.LoadAll<PowerUpData>("PowerUps"));
+    }
+
+    private void StartProfileService()
+    {
+        this.m_ProfileService = new ProfileService();
+        this.m_ProfileService.LoadOrCreateProfile();
+        this.m_ProfileService.CheckRemoteProfile();
     }
 
     void Start()
