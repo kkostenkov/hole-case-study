@@ -7,6 +7,9 @@ namespace Managers.Social
     public class LoginService
     {
         public event Action LoginLogoutFlowComplete;
+        private Dictionary<string, ILoginProvider> supportedProviders = new();
+        private ILoginProvider currentProvider;
+        private const string SocialProviderPrefsKey = "SocialProvider";
 
         public bool IsLoggedIn {
             get {
@@ -14,10 +17,6 @@ namespace Managers.Social
                 return result?.IsSuccess ?? false;
             }
         }
-
-        private Dictionary<string, ILoginProvider> supportedProviders = new();
-        private ILoginProvider currentProvider;
-        private const string SocialProviderPrefsKey = "SocialProvider";
 
         public void Initialize()
         {
@@ -35,7 +34,7 @@ namespace Managers.Social
 
         private void TryInitializeAndLoginWithKnownProvider()
         {
-            currentProvider = GetPreviousProvider();
+            currentProvider = GetLastProvider();
             if (currentProvider == null) {
                 return;
             }
@@ -57,7 +56,7 @@ namespace Managers.Social
 
         public void Logout()
         {
-            SetProviderName(string.Empty);
+            SaveLastActiveProviderName(string.Empty);
             this.currentProvider?.Logout();
             this.LoginLogoutFlowComplete?.Invoke();
             Debug.Log("Logged out");
@@ -75,17 +74,17 @@ namespace Managers.Social
             var result = this.currentProvider.LastLoginResult;
             Debug.Log($"Logged {result.IsSuccess} in with {result.Provider}");
             if (result.IsSuccess) {
-                SetProviderName(result.Provider);    
+                SaveLastActiveProviderName(result.Provider);    
             }
             this.LoginLogoutFlowComplete?.Invoke();
         }
 
-        private void SetProviderName(string name)
+        private void SaveLastActiveProviderName(string name)
         {
             PlayerPrefs.SetString(SocialProviderPrefsKey, name);
         }
 
-        private ILoginProvider GetPreviousProvider()
+        private ILoginProvider GetLastProvider()
         {
             var name = PlayerPrefs.GetString(SocialProviderPrefsKey);
             this.supportedProviders.TryGetValue(name, out var provider);
