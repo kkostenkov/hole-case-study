@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Managers.ProfileStorage;
 
 public enum GamePhase
 {
@@ -10,6 +11,7 @@ public enum GamePhase
     END
 }
 
+[DefaultExecutionOrder(-9)]
 public class GameManager : SingletonMB<GameManager>
 {
     private const float c_PopPointTeamPadding = 7.5f;
@@ -50,6 +52,7 @@ public class GameManager : SingletonMB<GameManager>
     public bool m_AlreadyRevive = false;
 
     // Cache
+    private IProfileService m_ProfileService;
     private StatsManager m_StatsManager;
     private ProgressionView m_ProgressionView;
     private MainMenuView m_MainMenuView;
@@ -78,7 +81,7 @@ public class GameManager : SingletonMB<GameManager>
     private List<GameObject> m_Objects; // Powerups and other map objects
     private List<Player> m_OrderedPlayers;
 
-    void Awake()
+    private void Awake()
     {
 #if UNITY_EDITOR
         if (m_SaveCleared == false)
@@ -92,7 +95,10 @@ public class GameManager : SingletonMB<GameManager>
         Application.targetFrameRate = 60;
 
         // Cache
+        m_ProfileService = new ProfileService();
+        m_ProfileService.LoadOrCreateProfile();
         m_StatsManager = StatsManager.Instance;
+        m_StatsManager.Inject(this.m_ProfileService);
         m_ProgressionView = ProgressionView.Instance;
         m_MainMenuView = MainMenuView.Instance;
         m_BattleRoyaleManager = BattleRoyaleManager.Instance;

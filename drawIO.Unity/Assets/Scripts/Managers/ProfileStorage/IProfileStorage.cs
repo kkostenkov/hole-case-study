@@ -6,6 +6,6 @@ namespace Managers.ProfileStorage
     public interface IProfileStorage
     {
         Task SaveImmediate(ProfileData profile);
-        Task<ProfileData> LoadProfile();
+        Task<ProfileData> LoadProfileAsync();
     }
 }

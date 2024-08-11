@@ -19,7 +19,7 @@ public class DrawIoUnityMenu
     private static async Task LoadProfile()
     {
         var storage = new LocalProfileStorage();
-        var data = await storage.LoadProfile();
+        var data = await storage.LoadProfileAsync();
         Debug.Log(data.ToString());
     }
 }

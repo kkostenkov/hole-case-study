@@ -23,7 +23,7 @@ namespace Managers.ProfileStorage
             return Save(profile);
         }
 
-        public async Task<ProfileData> LoadProfile()
+        public async Task<ProfileData> LoadProfileAsync()
         {
             await this.semaphore.WaitAsync();
             try {
@@ -38,6 +38,17 @@ namespace Managers.ProfileStorage
             finally {
                 this.semaphore.Release();
             }
+        }
+        
+        public ProfileData LoadProfile()
+        {
+            if (!File.Exists(this.SavePath)) {
+                return null;
+            }
+
+            var json = File.ReadAllText(this.SavePath);
+            var data = JsonConvert.DeserializeObject<ProfileData>(json);
+            return data;
         }
 
         private async Task Save(ProfileData profile)
