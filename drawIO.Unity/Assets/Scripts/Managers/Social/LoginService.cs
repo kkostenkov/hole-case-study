@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,6 +6,8 @@ namespace Managers.Social
 {
     public class LoginService
     {
+        public event Action LoginLogoutFlowComplete;
+
         public bool IsLoggedIn {
             get {
                 var result = this.currentProvider?.LastLoginResult;
@@ -13,7 +16,6 @@ namespace Managers.Social
         }
 
         private Dictionary<string, ILoginProvider> supportedProviders = new();
-
         private ILoginProvider currentProvider;
         private const string SocialProviderPrefsKey = "SocialProvider";
 
@@ -57,6 +59,8 @@ namespace Managers.Social
         {
             SetProviderName(string.Empty);
             this.currentProvider?.Logout();
+            this.LoginLogoutFlowComplete?.Invoke();
+            Debug.Log("Logged out");
         }
 
         private void InitializeAndLogin(ILoginProvider provider)
@@ -73,6 +77,7 @@ namespace Managers.Social
             if (result.IsSuccess) {
                 SetProviderName(result.Provider);    
             }
+            this.LoginLogoutFlowComplete?.Invoke();
         }
 
         private void SetProviderName(string name)

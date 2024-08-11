@@ -6,7 +6,17 @@ namespace Managers.Social
 
         public override bool TryExpressLogin()
         {
-            return this.worker.CheckLogin();
+            LastLoginResult = new LoginResult() {
+                IsSuccess = false,
+                Provider = ProviderName,
+                Token = LoadToken()
+            };
+            if (!this.worker.CheckLogin()) {
+                return false;
+            }
+
+            LastLoginResult.IsSuccess = true;
+            return true;
         }
     }
 }

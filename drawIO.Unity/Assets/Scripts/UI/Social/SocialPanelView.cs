@@ -23,7 +23,7 @@ public class SocialPanelView : MonoBehaviour
 
     private void OnEnable()
     {
-        SetupView();
+        UpdateView();
     }
 
     private void OnDestroy()
@@ -34,12 +34,15 @@ public class SocialPanelView : MonoBehaviour
         this.controller.Updated -= OnControllerUpdated;
     }
 
-    private void SetupView()
+    private void UpdateView()
     {
         var isLoggedIn = this.controller.IsLoggedIn;
         LogoutButton.gameObject.SetActive(isLoggedIn);
+        LogoutButton.interactable = this.controller.IsAcceptingInput;
         FacebookLoginButton.gameObject.SetActive(!isLoggedIn);
+        FacebookLoginButton.interactable = this.controller.IsAcceptingInput;
         GoogleLoginButton.gameObject.SetActive(!isLoggedIn);
+        GoogleLoginButton.interactable = this.controller.IsAcceptingInput;
     }
 
     private void OnControllerUpdated()
@@ -47,7 +50,7 @@ public class SocialPanelView : MonoBehaviour
         if (!gameObject.activeSelf) {
             return;
         }
-        SetupView();
+        UpdateView();
     }
 
     private void OnGoogleLoginClicked()

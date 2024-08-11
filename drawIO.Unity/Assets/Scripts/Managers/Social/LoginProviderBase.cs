@@ -22,14 +22,11 @@ namespace Managers.Social
             this.worker.Login(OnLogin);
         }
 
-        public virtual bool TryExpressLogin()
-        {
-            Debug.LogError("Express login is called on base method. Use overrides");
-            return false;
-        }
+        public abstract bool TryExpressLogin();
 
         public virtual void Logout()
         {
+            LastLoginResult = null;
             DeleteToken();
         }
 
@@ -49,8 +46,13 @@ namespace Managers.Social
         {
             PlayerPrefs.SetString(TokenPrefsKey, token);
         }
+        
+        protected string LoadToken()
+        {
+            return PlayerPrefs.GetString(TokenPrefsKey);
+        }
 
-        public void DeleteToken()
+        private void DeleteToken()
         {
             PlayerPrefs.DeleteKey(TokenPrefsKey);
         }

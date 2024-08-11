@@ -9,11 +9,18 @@ namespace Managers.Social
 
         public override bool TryExpressLogin()
         {
-            var token = PlayerPrefs.GetString(TokenPrefsKey);
-            if (string.IsNullOrEmpty(token)) {
+            var token = LoadToken();
+            LastLoginResult = new LoginResult() {
+                IsSuccess = false,
+                Provider = ProviderName,
+                Token = token,
+            };
+            if (!this.worker.CheckLogin(token)) {
                 return false;
             }
-            return this.worker.CheckLogin(token);
+
+            LastLoginResult.IsSuccess = true;
+            return true;
         }
     }
 }

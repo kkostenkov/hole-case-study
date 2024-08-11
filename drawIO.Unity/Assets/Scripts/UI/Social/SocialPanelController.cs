@@ -3,30 +3,41 @@ using Managers.Social;
 
 internal class SocialPanelController
 {
-    public event Action Updated; 
-    public bool IsLoggedIn;
+    public event Action Updated;
+    public bool IsLoggedIn => this.loginService.IsLoggedIn;
+    public bool IsAcceptingInput;
     private LoginService loginService;
 
     public SocialPanelController()
     {
         this.loginService = new LoginService();
+        this.loginService.LoginLogoutFlowComplete += OnLoginStatusChanged;
+        loginService.Initialize();
+        IsAcceptingInput = true;
     }
 
     public void LoginGoogle()
     {
-        this.IsLoggedIn = true;
+        IsAcceptingInput = false;
+        this.loginService.LoginWithGoogle();
         this.Updated?.Invoke();
     }
 
     public void LoginFacebook()
     {
-        this.IsLoggedIn = true;
-        this.Updated?.Invoke();
+        IsAcceptingInput = false;
+        this.loginService.LoginWithFacebook();
     }
 
     public void Logout()
     {
-        this.IsLoggedIn = false;
+        IsAcceptingInput = false;
+        this.loginService.Logout();
+    }
+
+    public void OnLoginStatusChanged()
+    {
+        IsAcceptingInput = true;
         this.Updated?.Invoke();
     }
 }
