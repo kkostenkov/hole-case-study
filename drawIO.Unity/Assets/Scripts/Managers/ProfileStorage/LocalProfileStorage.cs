@@ -63,6 +63,7 @@ namespace Managers.ProfileStorage
             finally {
                 this.semaphore.Release();
             }
+            Debug.Log("Profile saved");
         }
     }
 }
