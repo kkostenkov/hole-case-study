@@ -15,7 +15,6 @@ public static class Constants
     public const string         c_LevelSave = "Level";
 	public const string			c_GameResultSave = "GameResult";
     public const string         c_BestScoreSave = "BestScore";
-	public const string         c_PlayerNameSave = "Nickname";
 	public const string         c_PlayerXPSave = "XP";
     public const string         c_PlayerLevelSave = "Lvl";
     public const string         c_VibrationSave = "Vibration";

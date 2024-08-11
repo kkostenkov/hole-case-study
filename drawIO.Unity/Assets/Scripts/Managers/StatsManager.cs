@@ -1,22 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Text;
+using Managers.Profile;
 
 public class StatsManager : SingletonMB<StatsManager>
 {
+	private IProfileService profileService;
+	
 	public List<int>    m_XPForLevel;
 	public int          m_LastGain = 0;
 
-    public int FavoriteSkin
+    public int FavoriteSkin {
+        get => this.profileService.GetSkin();
+        set => this.profileService.SetSkin(value);
+    }
+    
+    public void Inject(IProfileService mProfileService)
     {
-        get
-        {
-            return (PlayerPrefs.GetInt("FavoriteSkin", 0));
-        }
-        set
-        {
-            PlayerPrefs.SetInt("FavoriteSkin", value);
-        }
+	    this.profileService = mProfileService;
     }
 
     private int GetGameResult(int _Index)
@@ -70,14 +70,14 @@ public class StatsManager : SingletonMB<StatsManager>
 			return 0;
 	}
 
-    public void SetNickname(string _Name)
+	public void SetNickname(string _Name)
 	{
-			PlayerPrefs.SetString(Constants.c_PlayerNameSave, _Name);
+		this.profileService.SetNickname(_Name);
 	}
 
-    public string GetNickname()
+	public string GetNickname()
 	{
-		return (PlayerPrefs.GetString(Constants.c_PlayerNameSave, null));
+		return this.profileService.GetNickname();
 	}
 
     public void SetLastXP(int _XP)

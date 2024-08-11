@@ -151,10 +151,6 @@ public class HumanPlayer : Player, IDirectionController
 	public override void Init(string _Name, BrushData _Brush, Color _Color)
 	{
 		string playerName = m_StatsManager.GetNickname();
-
-		if (string.IsNullOrEmpty(playerName))
-			playerName = Constants.c_DefaultPlayerName;
-		
 		base.Init(playerName, _Brush, _Color);
 	}
 
