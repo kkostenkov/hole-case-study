@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Data;
-using Managers.ProfileStorage;
+using Managers.Profile.Storage;
 using UnityEditor;
 using UnityEngine;
 

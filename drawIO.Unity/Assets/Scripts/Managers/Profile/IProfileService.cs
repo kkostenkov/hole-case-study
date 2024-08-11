@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Managers.ProfileStorage
+namespace Managers.Profile
 {
     public interface IProfileService : IProfileViewService
     {

@@ -5,7 +5,7 @@ using Data;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace Managers.ProfileStorage
+namespace Managers.Profile.Storage
 {
     public class LocalProfileStorage : IProfileStorage
     {

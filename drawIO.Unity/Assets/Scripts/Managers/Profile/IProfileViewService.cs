@@ -1,4 +1,4 @@
-namespace Managers.ProfileStorage
+namespace Managers.Profile
 {
     public interface IProfileViewService
     {

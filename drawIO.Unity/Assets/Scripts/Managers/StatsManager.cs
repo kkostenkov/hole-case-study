@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using Managers.ProfileStorage;
+using Managers.Profile;
 
 public class StatsManager : SingletonMB<StatsManager>
 {
