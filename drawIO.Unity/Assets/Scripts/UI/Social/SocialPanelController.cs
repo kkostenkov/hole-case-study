@@ -19,19 +19,21 @@ internal class SocialPanelController
     public void LoginGoogle()
     {
         IsAcceptingInput = false;
-        this.loginService.LoginWithGoogle();
         this.Updated?.Invoke();
+        this.loginService.LoginWithGoogle();
     }
 
     public void LoginFacebook()
     {
         IsAcceptingInput = false;
+        this.Updated?.Invoke();
         this.loginService.LoginWithFacebook();
     }
 
     public void Logout()
     {
         IsAcceptingInput = false;
+        this.Updated?.Invoke();
         this.loginService.Logout();
     }
 

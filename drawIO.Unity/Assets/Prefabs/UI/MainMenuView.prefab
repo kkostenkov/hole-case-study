@@ -24189,7 +24189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bba4fc4387a6c409fbc1b379513e33ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  socialPanel: {fileID: 5836893212550950221}
+  socialPanelView: {fileID: 5836893212550950221}
   socialPanelButton: {fileID: 7725764061727990834}
   m_VibrationButton: {fileID: 114351509503539836}
   m_VibrationOnSprite: {fileID: 21300000, guid: aefdc2723ae1c4c4f90648cf7d422159,
