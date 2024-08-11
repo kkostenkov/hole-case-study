@@ -8,8 +8,7 @@ namespace Managers.Social
 
         public void CheckLoginFlow()
         {
-            OnLoginComplete += OnOnLoginComplete;
-            base.Login();
+            base.Login(OnOnLoginComplete);
         }
 
         private void OnOnLoginComplete()

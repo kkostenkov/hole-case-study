@@ -37,5 +37,10 @@ namespace Managers.Social
             
             this.LoginSubscribers?.Invoke(loginResult);
         }
+
+        public bool CheckLogin(string token = null)
+        {
+            return true;
+        }
     }
 }

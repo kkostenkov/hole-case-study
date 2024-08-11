@@ -5,19 +5,32 @@ namespace Managers.Social
 {
     public abstract class LoginProviderBase : ILoginProvider
     {
-        public event Action OnLoginComplete;
         public abstract string ProviderName { get; }
+        public LoginResult LastLoginResult { get; set; }
+        protected event Action LoginComplete;
+        protected string TokenPrefsKey => ProviderName + "_Token";
         protected LoginWorkerMock worker;
-        protected LoginResult LastLoginResult;
 
         public virtual void Initialize()
         {
             this.worker = new LoginWorkerMock(ProviderName);
         }
 
-        public virtual void Login()
+        public virtual void Login(Action onComplete)
         {
+            this.LoginComplete += onComplete;
             this.worker.Login(OnLogin);
+        }
+
+        public virtual bool TryExpressLogin()
+        {
+            Debug.LogError("Express login is called on base method. Use overrides");
+            return false;
+        }
+
+        public virtual void Logout()
+        {
+            DeleteToken();
         }
 
         private void OnLogin(LoginResult result)
@@ -25,7 +38,21 @@ namespace Managers.Social
             Debug.Log(result.IsSuccess ? $"Login is done. Token: {result.Token}" : "Unsuccessful login");
 
             this.LastLoginResult = result;
-            this.OnLoginComplete?.Invoke();
+            if (LastLoginResult.IsSuccess) {
+                SaveToken(LastLoginResult.Token);
+            }
+            this.LoginComplete?.Invoke();
+            this.LoginComplete = null;
+        }
+
+        private void SaveToken(string token)
+        {
+            PlayerPrefs.SetString(TokenPrefsKey, token);
+        }
+
+        public void DeleteToken()
+        {
+            PlayerPrefs.DeleteKey(TokenPrefsKey);
         }
     }
 }

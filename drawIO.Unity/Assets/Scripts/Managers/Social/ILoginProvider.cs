@@ -1,11 +1,15 @@
+
 using System;
 
 namespace Managers.Social
 {
     public interface ILoginProvider
     {
-        event Action OnLoginComplete;
+        string ProviderName { get; }
+        LoginResult LastLoginResult { get; set; }
         void Initialize();
-        void Login();
+        void Login(Action onComplete);
+        bool TryExpressLogin();
+        void Logout();
     }
 }
